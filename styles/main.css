@@ -62,3 +62,18 @@ table {
     padding: 2rem;
   }
 }
+
+mark {
+  background: #fef08a;
+  color: inherit;
+}
+
+#records-table td, #records-table th {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+th[data-sort]:hover, th[data-sort]:focus {
+  text-decoration: underline;
+}
