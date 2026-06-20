@@ -1,0 +1,64 @@
+﻿:root {
+  --primary: #2563eb;
+  --bg: #f9fafb;
+  --text: #1f2937;
+  --error: #dc2626;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  background: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+}
+
+a:focus, button:focus, input:focus, select:focus {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+nav ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.error {
+  color: var(--error);
+  font-size: 0.85rem;
+  display: block;
+}
+
+@media (min-width: 768px) {
+  nav ul { flex-direction: row; gap: 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+}

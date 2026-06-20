@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Finance Tracker</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <header>
+    <h1>Finance Tracker</h1>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#records">Records</a></li>
+        <li><a href="#add-form">Add Transaction</a></li>
+        <li><a href="#settings">Settings</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="dashboard" aria-labelledby="dashboard-heading">
+      <h2 id="dashboard-heading">Dashboard</h2>
+      <div id="stats" role="status" aria-live="polite"></div>
+    </section>
+
+    <section id="records" aria-labelledby="records-heading">
+      <h2 id="records-heading">Transactions</h2>
+      <input type="search" id="search-input" placeholder="Search (regex supported)" aria-label="Search transactions">
+      <table id="records-table">
+        <thead>
+          <tr><th>Date</th><th>Description</th><th>Category</th><th>Amount</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="records-body"></tbody>
+      </table>
+    </section>
+
+    <section id="add-form" aria-labelledby="form-heading">
+      <h2 id="form-heading">Add / Edit Transaction</h2>
+      <form id="transaction-form" novalidate>
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description" required>
+        <span class="error" id="description-error" role="alert"></span>
+
+        <label for="amount">Amount</label>
+        <input type="text" id="amount" name="amount" required>
+        <span class="error" id="amount-error" role="alert"></span>
+
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option>Food</option>
+          <option>Books</option>
+          <option>Transport</option>
+          <option>Entertainment</option>
+          <option>Fees</option>
+          <option>Other</option>
+        </select>
+
+        <label for="date">Date</label>
+        <input type="text" id="date" name="date" placeholder="YYYY-MM-DD" required>
+        <span class="error" id="date-error" role="alert"></span>
+
+        <button type="submit">Save Transaction</button>
+      </form>
+    </section>
+
+    <section id="settings" aria-labelledby="settings-heading">
+      <h2 id="settings-heading">Settings</h2>
+    </section>
+
+    <section id="about" aria-labelledby="about-heading">
+      <h2 id="about-heading">About</h2>
+      <p>Built by Annyk. <a href="https://github.com/yourusername">GitHub</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Finance Tracker</p>
+  </footer>
+
+  <script type="module" src="scripts/ui.js"></script>
+</body>
+</html>
