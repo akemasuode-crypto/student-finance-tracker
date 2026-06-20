@@ -77,3 +77,19 @@ mark {
 th[data-sort]:hover, th[data-sort]:focus {
   text-decoration: underline;
 }
+
+#trend-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 80px;
+  margin-top: 0.5rem;
+}
+
+.trend-bar {
+  flex: 1;
+  background: var(--primary);
+  min-height: 2px;
+  border-radius: 2px 2px 0 0;
+  transition: height 0.3s ease;
+}

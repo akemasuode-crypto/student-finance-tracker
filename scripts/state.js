@@ -1,6 +1,7 @@
-﻿import { loadRecords, saveRecords } from "./storage.js";
+﻿import { loadRecords, saveRecords, loadSettings, saveSettings } from "./storage.js";
 
 let records = loadRecords();
+let settings = loadSettings();
 
 export function getRecords() {
   return records;
@@ -32,4 +33,13 @@ export function updateRecord(id, updates) {
 export function deleteRecord(id) {
   records = records.filter(r => r.id !== id);
   saveRecords(records);
+}
+
+export function getCap() {
+  return settings.cap;
+}
+
+export function setCap(value) {
+  settings.cap = value;
+  saveSettings(settings);
 }

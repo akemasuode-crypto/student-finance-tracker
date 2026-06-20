@@ -25,15 +25,24 @@
   <main id="main">
     <section id="dashboard" aria-labelledby="dashboard-heading">
       <h2 id="dashboard-heading">Dashboard</h2>
-      <div id="stats" role="status" aria-live="polite"></div>
+      <div id="stats"></div>
+      <div id="cap-status" role="status"></div>
+      <div id="trend-chart" aria-hidden="true"></div>
     </section>
 
     <section id="records" aria-labelledby="records-heading">
       <h2 id="records-heading">Transactions</h2>
-      <input type="search" id="search-input" placeholder="Search (regex supported)" aria-label="Search transactions"> <label for="case-toggle"><input type="checkbox" id="case-toggle"> Case-insensitive</label>
+      <input type="search" id="search-input" placeholder="Search (regex supported)" aria-label="Search transactions">
+      <label for="case-toggle"><input type="checkbox" id="case-toggle"> Case-insensitive</label>
       <table id="records-table">
         <thead>
-          <tr><th data-sort="date" tabindex="0">Date</th><th data-sort="description" tabindex="0">Description</th><th>Category</th><th data-sort="amount" tabindex="0">Amount</th><th>Actions</th></tr>
+          <tr>
+            <th data-sort="date" tabindex="0">Date</th>
+            <th data-sort="description" tabindex="0">Description</th>
+            <th>Category</th>
+            <th data-sort="amount" tabindex="0">Amount</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody id="records-body"></tbody>
       </table>
@@ -41,6 +50,7 @@
 
     <section id="add-form" aria-labelledby="form-heading">
       <h2 id="form-heading">Add / Edit Transaction</h2>
+      <div id="form-status" role="status" aria-live="polite"></div>
       <form id="transaction-form" novalidate>
         <label for="description">Description</label>
         <input type="text" id="description" name="description" required>
@@ -70,11 +80,16 @@
 
     <section id="settings" aria-labelledby="settings-heading">
       <h2 id="settings-heading">Settings</h2>
+      <form id="settings-form">
+        <label for="cap-input">Monthly spending cap</label>
+        <input type="text" id="cap-input" placeholder="e.g. 200">
+        <button type="submit">Save Cap</button>
+      </form>
     </section>
 
     <section id="about" aria-labelledby="about-heading">
       <h2 id="about-heading">About</h2>
-      <p>Built by Annyk. <a href="https://github.com/yourusername">GitHub</a></p>
+      <p>Built by Annyk. <a href="https://github.com/akemasuode-crypto">GitHub</a></p>
     </section>
   </main>
 
@@ -85,4 +100,3 @@
   <script type="module" src="scripts/ui.js"></script>
 </body>
 </html>
-

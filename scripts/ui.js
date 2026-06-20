@@ -1,20 +1,23 @@
 ﻿import { validateDescription, validateAmount, validateDate, validateCategory, hasDuplicateWord } from "./validators.js";
-import { getRecords, addRecord, updateRecord, deleteRecord } from "./state.js";
+import { getRecords, addRecord, updateRecord, deleteRecord, getCap, setCap } from "./state.js";
 import { compileRegex, highlight, filterRecords } from "./search.js";
+import { computeStats } from "./stats.js";
 
 const form = document.getElementById("transaction-form");
-const statusBox = document.getElementById("stats");
+const formStatus = document.getElementById("form-status");
 const tableBody = document.getElementById("records-body");
 const searchInput = document.getElementById("search-input");
 const caseToggle = document.getElementById("case-toggle");
+const settingsForm = document.getElementById("settings-form");
+const capInput = document.getElementById("cap-input");
 
 let editingId = null;
 let sortField = "date";
 let sortDir = "desc";
 
 function announce(message, urgent = false) {
-  statusBox.setAttribute("aria-live", urgent ? "assertive" : "polite");
-  statusBox.textContent = message;
+  formStatus.setAttribute("aria-live", urgent ? "assertive" : "polite");
+  formStatus.textContent = message;
 }
 
 function sortRecords(records) {
@@ -29,6 +32,39 @@ function sortRecords(records) {
     if (valA > valB) return sortDir === "asc" ? 1 : -1;
     return 0;
   });
+}
+
+function renderDashboard() {
+  const records = getRecords();
+  const stats = computeStats(records);
+  const cap = getCap();
+
+  const statsBox = document.getElementById("stats");
+  statsBox.innerHTML =
+    "<p>Total transactions: " + stats.total + "</p>" +
+    "<p>Total spent: $" + stats.sum.toFixed(2) + "</p>" +
+    "<p>Top category: " + stats.topCategory + "</p>";
+
+  const trendBox = document.getElementById("trend-chart");
+  const maxDay = Math.max.apply(null, stats.days.map(d => d.total).concat([1]));
+  trendBox.innerHTML = stats.days.map(d => {
+    const heightPct = (d.total / maxDay) * 100;
+    return "<div class=\"trend-bar\" style=\"height:" + heightPct + "%\" title=\"" + d.date + ": $" + d.total.toFixed(2) + "\"></div>";
+  }).join("");
+
+  const capBox = document.getElementById("cap-status");
+  if (cap !== null && cap !== undefined && !isNaN(cap)) {
+    const remaining = cap - stats.sum;
+    if (remaining < 0) {
+      capBox.setAttribute("aria-live", "assertive");
+      capBox.textContent = "Over budget by $" + Math.abs(remaining).toFixed(2) + ".";
+    } else {
+      capBox.setAttribute("aria-live", "polite");
+      capBox.textContent = "$" + remaining.toFixed(2) + " remaining under your cap.";
+    }
+  } else {
+    capBox.textContent = "";
+  }
 }
 
 function renderTable() {
@@ -51,30 +87,30 @@ function renderTable() {
     const row = document.createElement("tr");
     row.innerHTML = "<td colspan=\"5\">No transactions found.</td>";
     tableBody.appendChild(row);
-    return;
+  } else {
+    records.forEach(r => {
+      const row = document.createElement("tr");
+      const desc = re ? highlight(r.description, re) : r.description;
+      const cat = re ? highlight(r.category, re) : r.category;
+
+      row.innerHTML =
+        "<td>" + r.date + "</td>" +
+        "<td>" + desc + "</td>" +
+        "<td>" + cat + "</td>" +
+        "<td>$" + Number(r.amount).toFixed(2) + "</td>" +
+        "<td>" +
+          "<button type=\"button\" class=\"edit-btn\" data-id=\"" + r.id + "\">Edit</button> " +
+          "<button type=\"button\" class=\"delete-btn\" data-id=\"" + r.id + "\">Delete</button>" +
+        "</td>";
+      tableBody.appendChild(row);
+    });
   }
 
-  records.forEach(r => {
-    const row = document.createElement("tr");
-    const desc = re ? highlight(r.description, re) : r.description;
-    const cat = re ? highlight(r.category, re) : r.category;
-
-    row.innerHTML =
-      "<td>" + r.date + "</td>" +
-      "<td>" + desc + "</td>" +
-      "<td>" + cat + "</td>" +
-      "<td>$" + Number(r.amount).toFixed(2) + "</td>" +
-      "<td>" +
-        "<button type=\"button\" class=\"edit-btn\" data-id=\"" + r.id + "\">Edit</button> " +
-        "<button type=\"button\" class=\"delete-btn\" data-id=\"" + r.id + "\">Delete</button>" +
-      "</td>";
-    tableBody.appendChild(row);
-  });
+  renderDashboard();
 }
 
 document.querySelectorAll("#records-table th[data-sort]").forEach(th => {
   th.style.cursor = "pointer";
-  th.tabIndex = 0;
   th.addEventListener("click", () => applySort(th.dataset.sort));
   th.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -178,6 +214,21 @@ form.addEventListener("submit", (e) => {
 
   form.reset();
   renderTable();
+});
+
+const existingCap = getCap();
+if (existingCap !== null && existingCap !== undefined) {
+  capInput.value = existingCap;
+}
+
+settingsForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const value = parseFloat(capInput.value);
+  if (!isNaN(value) && value >= 0) {
+    setCap(value);
+    renderDashboard();
+    announce("Spending cap updated.");
+  }
 });
 
 renderTable();
