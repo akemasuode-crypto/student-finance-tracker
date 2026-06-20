@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Validator Tests</title>
+</head>
+<body>
+  <h1>Validator Tests</h1>
+  <pre id="results"></pre>
+  <script type="module">
+    import {
+      validateDescription,
+      validateAmount,
+      validateDate,
+      validateCategory,
+      hasDuplicateWord
+    } from "../scripts/validators.js";
+
+    const results = [];
+    function assert(name, actual, expected) {
+      const pass = actual === expected;
+      results.push((pass ? "PASS" : "FAIL") + " - " + name + " (got " + actual + ", expected " + expected + ")");
+    }
+
+    assert("description valid", validateDescription("Lunch at cafeteria"), true);
+    assert("description leading space", validateDescription(" Lunch"), false);
+    assert("description trailing space", validateDescription("Lunch "), false);
+
+    assert("amount valid decimal", validateAmount("12.50"), true);
+    assert("amount valid integer", validateAmount("45"), true);
+    assert("amount leading zero invalid", validateAmount("012"), false);
+    assert("amount too many decimals", validateAmount("12.500"), false);
+
+    assert("date valid", validateDate("2025-09-29"), true);
+    assert("date invalid month", validateDate("2025-13-01"), false);
+    assert("date invalid day", validateDate("2025-02-32"), false);
+
+    assert("category valid single word", validateCategory("Food"), true);
+    assert("category valid hyphenated", validateCategory("Self-Care"), true);
+    assert("category invalid numbers", validateCategory("Food1"), false);
+
+    assert("duplicate word detected", hasDuplicateWord("Lunch Lunch at cafeteria"), true);
+    assert("no duplicate word", hasDuplicateWord("Lunch at cafeteria"), false);
+
+    document.getElementById("results").textContent = results.join("\n");
+  </script>
+</body>
+</html>
