@@ -7,6 +7,11 @@ export function getRecords() {
   return records;
 }
 
+export function setRecords(newRecords) {
+  records = newRecords;
+  saveRecords(records);
+}
+
 export function addRecord(record) {
   const now = new Date().toISOString();
   const newRecord = {
@@ -41,5 +46,23 @@ export function getCap() {
 
 export function setCap(value) {
   settings.cap = value;
+  saveSettings(settings);
+}
+
+export function getRates() {
+  return settings.rates || { RWF: 1300, EUR: 0.92 };
+}
+
+export function setRates(rates) {
+  settings.rates = rates;
+  saveSettings(settings);
+}
+
+export function getDisplayCurrency() {
+  return settings.displayCurrency || "USD";
+}
+
+export function setDisplayCurrency(code) {
+  settings.displayCurrency = code;
   saveSettings(settings);
 }

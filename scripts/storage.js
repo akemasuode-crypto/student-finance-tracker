@@ -17,9 +17,9 @@ export function saveRecords(records) {
 export function loadSettings() {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    return raw ? JSON.parse(raw) : { cap: null };
+    return raw ? JSON.parse(raw) : { cap: null, rates: { RWF: 1300, EUR: 0.92 }, displayCurrency: "USD" };
   } catch {
-    return { cap: null };
+    return { cap: null, rates: { RWF: 1300, EUR: 0.92 }, displayCurrency: "USD" };
   }
 }
 

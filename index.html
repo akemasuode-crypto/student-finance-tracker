@@ -56,7 +56,7 @@
         <input type="text" id="description" name="description" required>
         <span class="error" id="description-error" role="alert"></span>
 
-        <label for="amount">Amount</label>
+        <label for="amount">Amount (USD)</label>
         <input type="text" id="amount" name="amount" required>
         <span class="error" id="amount-error" role="alert"></span>
 
@@ -81,10 +81,32 @@
     <section id="settings" aria-labelledby="settings-heading">
       <h2 id="settings-heading">Settings</h2>
       <form id="settings-form">
-        <label for="cap-input">Monthly spending cap</label>
+        <label for="cap-input">Monthly spending cap (USD)</label>
         <input type="text" id="cap-input" placeholder="e.g. 200">
-        <button type="submit">Save Cap</button>
+
+        <label for="rwf-rate">RWF per 1 USD</label>
+        <input type="text" id="rwf-rate" placeholder="e.g. 1300">
+
+        <label for="eur-rate">EUR per 1 USD</label>
+        <input type="text" id="eur-rate" placeholder="e.g. 0.92">
+
+        <label for="display-currency">Display currency</label>
+        <select id="display-currency">
+          <option value="USD">USD</option>
+          <option value="RWF">RWF</option>
+          <option value="EUR">EUR</option>
+        </select>
+
+        <button type="submit">Save Settings</button>
       </form>
+
+      <div class="import-export">
+        <button type="button" id="export-btn">Export JSON</button>
+        <div>
+          <label for="import-input">Import JSON</label>
+          <input type="file" id="import-input" accept="application/json">
+        </div>
+      </div>
     </section>
 
     <section id="about" aria-labelledby="about-heading">
