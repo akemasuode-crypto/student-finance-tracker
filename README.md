@@ -46,3 +46,8 @@ Open tests/tests.html directly in a browser. It runs assertion checks against sc
 ## Live Demo
 Add your GitHub Pages link here once enabled.
 
+## Link to page
+https://akemasuode-crypto.github.io/student-finance-tracker/
+
+
+
